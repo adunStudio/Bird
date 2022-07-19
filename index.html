@@ -9,12 +9,19 @@
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
-
+    <link rel="stylesheet" href="./hong.css">
 </head>
 
 <body>
+    <div class="my-container mx-auto">
+        <div id="loading" class="w-100 align-items-center d-flex">
+            <img src="/static/loading_img.gif" alt="" class="w-100">
+        </div>
+    </div>
+
 <video  id="bird-video" width="224" height="224" autoplay playsinline></video>
 <button id="find-button">찾아줘!</button>
+<canvas width="224" height="224"></canvas>
 </body>
 </html>
 <script type="module">
@@ -69,11 +76,12 @@
 
     $(document).ready(function () {
         $("#find-button").click( function () {
-            let canvas = document.createElement('canvas');
+            //let canvas = document.createElement('canvas');
+            let canvas = document.querySelector(canvas);
             canvas.width  = 224
             canvas.height = 224
             let ctx = canvas.getContext('2d');
-            
+
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height );
             let image = canvas.toDataURL('image/jpeg');
             //console.log(image)
