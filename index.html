@@ -19,6 +19,11 @@
 
         <div id="find">
             <video  id="bird-video" width="224" height="224" autoplay playsinline></video>
+            <div class="img_upload">
+                <input type="file" id="bird-file" class="input-btn" accept="img/*" required>
+                <button class="browse-btn">Image Upload</button>
+            </div>
+
             <button id="find-button">찾아줘!</button>
             <canvas id="find-canvas" width="224" height="224"></canvas>
         </div>
@@ -111,7 +116,32 @@
             $("#find").show()
         });
 
+        $("#bird-file").change(function(e){
+            var file = e.target.files;
+            let canvas = document.querySelector("#find-canvas");
+            canvas.width  = 224
+            canvas.height = 224
+            let ctx = canvas.getContext('2d');
 
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = new Image();
+                img.onload = function () {
+                    ctx.drawImage(img, 0, 0);
+
+                    var example = tf.browser.fromPixels(canvas);  // for example
+                    example = example.reshape([-1, 224, 224, 3]).cast('float32');
+                    //var prediction = model.predict(example).dataSync();
+                    var prediction =  model.predict(example);
+                    console.log(prediction);
+                    var maxValueIndex = prediction.argMax(-1).dataSync()[0];
+                    console.log(maxValueIndex)
+                    alert(categories[maxValueIndex])
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file[0]);
+        })
     });
 </script>
 <script>
