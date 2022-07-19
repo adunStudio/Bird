@@ -65,13 +65,15 @@
         }
     }
 
-    let canvas = document.createElement('canvas');
-    canvas.width  = 224
-    canvas.height = 224
-    let ctx = canvas.getContext('2d');
+
 
     $(document).ready(function () {
         $("#find-button").click( function () {
+            let canvas = document.createElement('canvas');
+            canvas.width  = 224
+            canvas.height = 224
+            let ctx = canvas.getContext('2d');
+            
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height );
             let image = canvas.toDataURL('image/jpeg');
             //console.log(image)
@@ -82,10 +84,13 @@
             //var prediction = model.predict(example).dataSync();
             var prediction = model.predict(example);
             console.log(prediction);
-            const maxValueIndex = prediction.argMax(-1).dataSync()[0];
+            var maxValueIndex = prediction.argMax(-1).dataSync()[0];
             console.log(maxValueIndex)
             alert(categories[maxValueIndex])
+
         });
+
+
     });
 </script>
 <script>
