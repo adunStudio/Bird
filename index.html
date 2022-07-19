@@ -20,7 +20,7 @@
         <div id="find">
             <video  id="bird-video" width="224" height="224" autoplay playsinline></video>
             <div class="img_upload">
-                <input type="file" id="bird-file" class="input-btn" accept="img/*" required>
+                <input type="file" id="bird-file" class="input-btn" accept="image/*" required>
                 <button class="browse-btn">Image Upload</button>
             </div>
 
@@ -125,11 +125,9 @@
 
             var reader = new FileReader();
             reader.onload = function (e) {
-                var img = new Image();
+                var img = new Image(224, 224);
                 img.onload = function () {
                     ctx.drawImage(img, 0, 0, 224, 224);
-                    console.log(img.height)
-                    console.log(img.width)
 
                     var example = tf.browser.fromPixels(canvas);  // for example
                     example = example.reshape([-1, 224, 224, 3]).cast('float32');
