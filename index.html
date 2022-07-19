@@ -3,13 +3,13 @@
 <head>
     <meta name="viewport" content="width=320; user-scalable=no" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>너는 어떤 새냐?</title>
+    <title>새새끼를 찾아줘</title>
     <script src="/jquery/jquery.js"></script>
-
 </head>
 
 <body>
-<video width="320" height="240" autoplay playsinline></video>
+<video  id="bird-video" width="224" height="224" autoplay playsinline></video>
+<button id="find-button">찾아줘!</button>
 </body>
 </html>
 <script>
@@ -17,7 +17,7 @@
 
     // Put variables in global scope to make them available to the browser console.
     var video = document.querySelector('video');
-    var constraints = window.constraints = { audio: true, video: { facingMode: { exact: "environment" } } }
+    var constraints = window.constraints = { audio: false, video: { facingMode: { exact: "environment" } } }
 
     var errorElement = document.querySelector('#errorMsg');
 
@@ -33,23 +33,38 @@
             video.srcObject = stream;
         })
         .catch(function(error) {
-            if (error.name === 'ConstraintNotSatisfiedError') {
-                errorMsg('The resolution ' + constraints.video.width.exact + 'x' +
+            if(error == 'NotFoundError: Requested device not found')
+            {
+                alert("핸드폰으로 접속해주세요.")
+            }
+            else if (error.name === 'ConstraintNotSatisfiedError') {
+                alert('The resolution ' + constraints.video.width.exact + 'x' +
                     constraints.video.width.exact + ' px is not supported by your device.');
             } else if (error.name === 'PermissionDeniedError') {
-                errorMsg('Permissions have not been granted to use your camera and ' +
-                    'microphone, you need to allow the page access to your devices in ' +
-                    'order for the demo to work.');
+                alert('카메라를 허락해주세요.');
             }
-            errorMsg('getUserMedia error: ' + error.name, error);
+            errorMsg(error.name, error);
         });
 
     function errorMsg(msg, error) {
-        alert(msg)
-        alert(msg)
+
         //errorElement.innerHTML += '<p>' + msg + '</p>';
         if (typeof error !== 'undefined') {
-            console.error(error);
+            console.error(msg + " " + error);
         }
     }
+
+    let canvas = document.createElement('canvas');
+    canvas.width  = 224
+    canvas.height = 224
+
+    setInterval(function() {
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height );
+        let image = canvas.toDataURL('image/jpeg');
+
+        console.log(image)
+    }, 1000);
+
+
 </script>
